@@ -637,7 +637,7 @@ class SqlWalker implements TreeWalker
 
         $property = $class->getProperty($fieldName);
 
-        if ($class->isInheritanceTypeJoined() && $property->isInherited()) {
+        if ($class->isInheritanceTypeJoined() && $class->isInheritedProperty($fieldName)) {
             $class = $property->getDeclaringClass();
         }
 
@@ -1403,7 +1403,7 @@ class SqlWalker implements TreeWalker
                         $subClass = $this->em->getClassMetadata($subClassName);
 
                         foreach ($subClass->getProperties() as $fieldName => $property) {
-                            if ($property->isInherited() || ($partialFieldSet && !in_array($fieldName, $partialFieldSet))) {
+                            if ($subClass->isInheritedProperty($fieldName) || ($partialFieldSet && !in_array($fieldName, $partialFieldSet))) {
                                 continue;
                             }
 
