@@ -1387,13 +1387,8 @@ class BasicEntityPersister implements EntityPersister
         foreach ($columns as $columnName) {
             $column = $this->columns[$columnName];
 
-            if ($column instanceof ColumnMetadata) {
-                $quotedColumns[] = $this->platform->quoteIdentifier($column->getColumnName());
-                $values[] = $column->getType()->convertToDatabaseValueSQL('?', $this->platform);
-            } else {
-                $quotedColumns[] = $this->platform->quoteIdentifier($column['name']);
-                $values[] = $column['type']->convertToDatabaseValueSQL('?', $this->platform);
-            }
+            $quotedColumns[] = $this->platform->quoteIdentifier($column->getColumnName());
+            $values[]        = $column->getType()->convertToDatabaseValueSQL('?', $this->platform);
         }
 
         $quotedColumns = implode(', ', $quotedColumns);
@@ -1946,6 +1941,7 @@ class BasicEntityPersister implements EntityPersister
 
         if (is_object($value) && $this->em->getMetadataFactory()->hasMetadataFor(ClassUtils::getClass($value))) {
             $class = $this->em->getClassMetadata(get_class($value));
+
             if ($class->isIdentifierComposite) {
                 $newValue = [];
 
