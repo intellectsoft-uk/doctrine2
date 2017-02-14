@@ -5,6 +5,7 @@ namespace Doctrine\Tests\ORM\Functional\Ticket;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\ORM\Annotation as ORM;
 
 class DDC3785Test extends \Doctrine\Tests\OrmFunctionalTestCase
 {
@@ -47,21 +48,21 @@ class DDC3785Test extends \Doctrine\Tests\OrmFunctionalTestCase
 }
 
 /**
- * @Entity
- * @Table(name="asset")
+ * @ORM\Entity
+ * @ORM\Table(name="asset")
  */
 class DDC3785_Asset
 {
     /**
-     * @Id @GeneratedValue(strategy="NONE") @Column(type="ddc3785_asset_id")
+     * @ORM\Id @ORM\GeneratedValue(strategy="NONE") @ORM\Column(type="ddc3785_asset_id")
      */
     private $id;
 
     /**
-     * @ManyToMany(targetEntity="DDC3785_Attribute", cascade={"persist"}, orphanRemoval=true)
-     * @JoinTable(name="asset_attributes",
-     *      joinColumns={@JoinColumn(name="asset_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="attribute_id", referencedColumnName="id")}
+     * @ORM\ManyToMany(targetEntity="DDC3785_Attribute", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\JoinTable(name="asset_attributes",
+     *      joinColumns={@ORM\JoinColumn(name="asset_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id")}
      *      )
      **/
     private $attributes;
@@ -88,21 +89,21 @@ class DDC3785_Asset
 }
 
 /**
- * @Entity
- * @Table(name="attribute")
+ * @ORM\Entity
+ * @ORM\Table(name="attribute")
  */
 class DDC3785_Attribute
 {
 	/**
-     * @Id @Column(type="integer")
-     * @GeneratedValue
+     * @ORM\Id @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
      */
 	private $id;
 
-	/** @Column(type = "string") */
+	/** @ORM\Column(type = "string") */
 	private $name;
 
-	/** @Column(type = "string") */
+	/** @ORM\Column(type = "string") */
 	private $value;
 
 	public function __construct($name, $value)
@@ -112,10 +113,10 @@ class DDC3785_Attribute
 	}
 }
 
-/** @Embeddable */
+/** @ORM\Embeddable */
 class DDC3785_AssetId
 {
-    /** @Column(type = "guid") */
+    /** @ORM\Column(type = "guid") */
     private $id;
 
     public function __construct($id)

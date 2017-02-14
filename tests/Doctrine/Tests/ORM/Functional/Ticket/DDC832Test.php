@@ -2,6 +2,8 @@
 
 namespace Doctrine\Tests\ORM\Functional\Ticket;
 
+use Doctrine\ORM\Annotation as ORM;
+
 class DDC832Test extends \Doctrine\Tests\OrmFunctionalTestCase
 {
     public function setUp()
@@ -10,7 +12,7 @@ class DDC832Test extends \Doctrine\Tests\OrmFunctionalTestCase
 
         $platform = $this->em->getConnection()->getDatabasePlatform();
 
-        if ($platform->getName() == "oracle") {
+        if ($platform->getName() === "oracle") {
             $this->markTestSkipped('Doesnt run on Oracle.');
         }
 
@@ -120,22 +122,22 @@ class DDC832Test extends \Doctrine\Tests\OrmFunctionalTestCase
 }
 
 /**
- * @Entity
- * @Table(name="LIKE")
+ * @ORM\Entity
+ * @ORM\Table(name="LIKE")
  */
 class DDC832Like
 {
     /**
-     * @Id @Column(type="integer") @GeneratedValue
+     * @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
      */
     public $id;
 
-    /** @Column(type="string") */
+    /** @ORM\Column(type="string") */
     public $word;
 
     /**
-     * @version
-     * @Column(type="integer")
+     * @ORM\Version
+     * @ORM\Column(type="integer")
      */
     public $version;
 
@@ -146,25 +148,25 @@ class DDC832Like
 }
 
 /**
- * @Entity
- * @Table(name="INDEX")
- * @InheritanceType("JOINED")
- * @DiscriminatorColumn(name="discr", type="string")
- * @DiscriminatorMap({"like" = "DDC832JoinedIndex", "fuzzy" = "DDC832JoinedTreeIndex"})
+ * @ORM\Entity
+ * @ORM\Table(name="INDEX")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"like" = "DDC832JoinedIndex", "fuzzy" = "DDC832JoinedTreeIndex"})
  */
 class DDC832JoinedIndex
 {
     /**
-     * @Id @Column(type="integer") @GeneratedValue
+     * @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
      */
     public $id;
 
-    /** @Column(type="string") */
+    /** @ORM\Column(type="string") */
     public $name;
 
     /**
-     * @version
-     * @Column(type="integer")
+     * @ORM\Version
+     * @ORM\Column(type="integer")
      */
     public $version;
 
@@ -175,14 +177,14 @@ class DDC832JoinedIndex
 }
 
 /**
- * @Entity
- * @Table(name="TREE_INDEX")
+ * @ORM\Entity
+ * @ORM\Table(name="TREE_INDEX")
  */
 class DDC832JoinedTreeIndex extends DDC832JoinedIndex
 {
-    /** @Column(type="integer") */
+    /** @ORM\Column(type="integer") */
     public $lft;
-    /** @Column(type="integer") */
+    /** @ORM\Column(type="integer") */
     public $rgt;
 
     public function __construct($name, $lft, $rgt)

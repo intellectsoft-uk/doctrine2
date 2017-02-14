@@ -718,11 +718,12 @@ abstract class OrmFunctionalTestCase extends OrmTestCase
             $this->isSecondLevelCacheEnabled = true;
         }
 
-        $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver(
-            [
-            realpath(__DIR__ . '/Models/Cache'),
-            realpath(__DIR__ . '/Models/GeoNames')
-            ], true));
+        $config->setMetadataDriverImpl(
+            $config->newDefaultAnnotationDriver([
+                realpath(__DIR__ . '/Models/Cache'),
+                realpath(__DIR__ . '/Models/GeoNames')
+            ])
+        );
 
         $conn = static::$sharedConn;
         $conn->getConfiguration()->setSQLLogger($this->sqlLoggerStack);
