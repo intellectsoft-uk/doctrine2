@@ -140,6 +140,19 @@ class MappingException extends \Doctrine\ORM\ORMException
     }
 
     /**
+     * Exception for invalid association type override.
+     *
+     * @param string $className The entity's name.
+     * @param string $fieldName
+     *
+     * @return MappingException
+     */
+    public static function invalidOverrideAssociationType($className, $fieldName)
+    {
+        return new self("Invalid association override named '$fieldName' for class '$className'.");
+    }
+
+    /**
      * Exception for invalid version property override.
      *
      * @param string $className The entity's name.
@@ -292,7 +305,7 @@ class MappingException extends \Doctrine\ORM\ORMException
      *
      * @return MappingException
      */
-    static function missingRequiredOption($field, $expectedOption, $hint = '')
+    public static function missingRequiredOption($field, $expectedOption, $hint = '')
     {
         $message = "The mapping of field '{$field}' is invalid: The option '{$expectedOption}' is required.";
 
