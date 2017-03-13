@@ -61,7 +61,7 @@ class ClassMetadataTest extends OrmTestCase
         $association->setTargetEntity('CmsAddress');
         $association->setMappedBy('foo');
 
-        $cm->mapOneToOne($association);
+        $cm->addAssociation($association);
 
         self::assertEquals(1, count($cm->associationMappings));
 
@@ -174,7 +174,7 @@ class ClassMetadataTest extends OrmTestCase
         $association->setJoinTable($joinTable);
         $association->setTargetEntity('DoctrineGlobal_User');
 
-        $cm->mapManyToMany($association);
+        $cm->addAssociation($association);
 
         self::assertEquals("DoctrineGlobal_User", $cm->associationMappings['author']->getTargetEntity());
     }
@@ -188,7 +188,7 @@ class ClassMetadataTest extends OrmTestCase
 
         $association->setTargetEntity('CmsGroup');
 
-        $cm->mapManyToMany($association);
+        $cm->addAssociation($association);
 
         $association = $cm->associationMappings['groups'];
 
@@ -228,7 +228,7 @@ class ClassMetadataTest extends OrmTestCase
 
         $association->setTargetEntity('CmsGroup');
 
-        $cm->mapManyToMany($association);
+        $cm->addAssociation($association);
 
         $association = $cm->associationMappings['groups'];
         $association = unserialize(serialize($association));
@@ -406,7 +406,7 @@ class ClassMetadataTest extends OrmTestCase
 
         $association->setTargetEntity('CmsUser');
 
-        $metadata->mapOneToOne($association);
+        $metadata->addAssociation($association);
     }
 
     public function testDuplicateFieldAndAssociationMapping2_ThrowsException()
@@ -418,7 +418,7 @@ class ClassMetadataTest extends OrmTestCase
 
         $association->setTargetEntity('CmsUser');
 
-        $metadata->mapOneToOne($association);
+        $metadata->addAssociation($association);
 
         $this->expectException(\Doctrine\ORM\Mapping\MappingException::class);
 
@@ -478,7 +478,7 @@ class ClassMetadataTest extends OrmTestCase
         $association->setTargetEntity('CmsUser');
         $association->setInversedBy('users');
 
-        $cm->mapManyToMany($association);
+        $cm->addAssociation($association);
 
         $association = $cm->associationMappings['user'];
 
@@ -505,7 +505,7 @@ class ClassMetadataTest extends OrmTestCase
         $association->setJoinColumns($joinColumns);
         $association->setTargetEntity('CmsUser');
 
-        $cm->mapOneToOne($association);
+        $cm->addAssociation($association);
 
         $association = $cm->associationMappings['user'];
         $joinColumns = $association->getJoinColumns();
@@ -535,7 +535,7 @@ class ClassMetadataTest extends OrmTestCase
         $association->setTargetEntity('CmsUser');
         $association->setInversedBy('users');
 
-        $cm->mapManyToMany($association);
+        $cm->addAssociation($association);
 
         $association        = $cm->associationMappings['user'];
         $joinTable          = $association->getJoinTable();
@@ -560,7 +560,7 @@ class ClassMetadataTest extends OrmTestCase
 
         $association->setTargetEntity('CmsUser');
 
-        $metadata->mapOneToOne($association);
+        $metadata->addAssociation($association);
 
         $association = $metadata->associationMappings['user'];
         $joinColumns = $association->getJoinColumns();
@@ -582,7 +582,7 @@ class ClassMetadataTest extends OrmTestCase
 
         $association->setTargetEntity('CmsUser');
 
-        $metadata->mapManyToMany($association);
+        $metadata->addAssociation($association);
 
         $association        = $metadata->associationMappings['user'];
         $joinTable          = $association->getJoinTable();
@@ -605,7 +605,7 @@ class ClassMetadataTest extends OrmTestCase
 
         $association->setTargetEntity(CMS\CmsUser::class);
 
-        $cm->mapManyToMany($association);
+        $cm->addAssociation($association);
 
         $association = $cm->associationMappings['author'];
 
@@ -646,7 +646,7 @@ class ClassMetadataTest extends OrmTestCase
 
         $association->setTargetEntity(CMS\CmsUser::class);
 
-        $metadata->mapManyToMany($association);
+        $metadata->addAssociation($association);
 
         $association = $metadata->associationMappings['author'];
 
@@ -666,7 +666,7 @@ class ClassMetadataTest extends OrmTestCase
         $association->setTargetEntity(DDC117Article::class);
         $association->setPrimaryKey(true);
 
-        $cm->mapOneToOne($association);
+        $cm->addAssociation($association);
 
         self::assertEquals(["article"], $cm->identifier);
     }
@@ -688,7 +688,7 @@ class ClassMetadataTest extends OrmTestCase
         $association->setPrimaryKey(true);
         $association->setOrphanRemoval(true);
 
-        $cm->mapOneToOne($association);
+        $cm->addAssociation($association);
     }
 
     /**
@@ -708,7 +708,7 @@ class ClassMetadataTest extends OrmTestCase
         $association->setPrimaryKey(true);
         $association->setMappedBy('details');
 
-        $cm->mapOneToOne($association);
+        $cm->addAssociation($association);
     }
 
     /**
@@ -727,7 +727,7 @@ class ClassMetadataTest extends OrmTestCase
         $association->setTargetEntity(DDC117Article::class);
         $association->setPrimaryKey(true);
 
-        $cm->mapManyToMany($association);
+        $cm->addAssociation($association);
     }
 
     /**
@@ -1126,7 +1126,7 @@ class ClassMetadataTest extends OrmTestCase
 
         $association->setTargetEntity('UnknownClass');
 
-        $cm->mapManyToOne($association);
+        $cm->addAssociation($association);
 
         $this->expectException(MappingException::class);
         $this->expectExceptionMessage("The target-entity Doctrine\\Tests\\Models\\CMS\\UnknownClass cannot be found in '" . CMS\CmsUser::class . "#address'.");
@@ -1215,13 +1215,13 @@ class ClassMetadataTest extends OrmTestCase
 
         $association->setTargetEntity('CmsUser');
 
-        $addressMetadata->mapManyToMany($association);
+        $addressMetadata->addAssociation($association);
 
         $association = new Mapping\ManyToManyAssociationMetadata('author');
 
         $association->setTargetEntity(CMS\CmsUser::class);
 
-        $articleMetadata->mapManyToMany($association);
+        $articleMetadata->addAssociation($association);
 
         self::assertEquals('routing_routingleg', $routingMetadata->table->getName());
         self::assertEquals('cms_cmsaddress_cms_cmsuser', $addressMetadata->associationMappings['user']->getJoinTable()->getName());
@@ -1275,7 +1275,7 @@ class ClassMetadataTest extends OrmTestCase
         $association->setTargetEntity('UnknownClass');
         $association->setCascade(['invalid']);
 
-        $cm->mapManyToOne($association);
+        $cm->addAssociation($association);
      }
 
     /**
@@ -1292,7 +1292,7 @@ class ClassMetadataTest extends OrmTestCase
 
         $association->setTargetEntity('DDC964Address');
 
-        $cm->mapManyToOne($association);
+        $cm->addAssociation($association);
 
         $cm->setAssociationOverride(new Mapping\ManyToOneAssociationMetadata('invalidPropertyName'));
     }
@@ -1355,7 +1355,7 @@ class ClassMetadataTest extends OrmTestCase
 
         $association->setTargetEntity('CustomTypeParent');
 
-        $cm->mapManyToMany($association);
+        $cm->addAssociation($association);
 
         $association = $cm->associationMappings['friendsWithMe'];
 
